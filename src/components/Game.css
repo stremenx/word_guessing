@@ -13,7 +13,7 @@
 .wordContainer {
     margin: 1.5em;
     padding: 1.5em;
-    border: solid 20px yellow;
+    border: solid 10px yellow;
     display: flex;
 }
 
