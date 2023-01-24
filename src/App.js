@@ -24,8 +24,8 @@ function App() {
  const [gameStage, setGameStage] = useState(stages[0].name);
  const [words] = useState(wordsList);
 
- const [pickWord, setPickWord] = useState("");
- const [pickedCategories, setPickedCategory] = useState("");
+ const [pickedWord, setPickWord] = useState("");
+ const [pickedCategory, setPickedCategory] = useState("");
  const [letters, setLetters] = useState([]);
  const [score, setScore] = useState(0)
 
@@ -68,7 +68,30 @@ const startGame = () => {
 
 //process the letter input
 const verifyLetter = (letter) => {
-  console.log(letter);
+  const normalizedLetter = letter.toLowerCase()
+
+//check if letter has already been utilized
+if (
+  guessedLetters.includes(normalizedLetter) || wrongLetters.includes(normalizedLetter)
+) {
+  return;
+}
+
+//puch guesses letter or remove a guess
+
+  if(letters.includes(normalizedLetter)) {
+    setGuessedLetters((actualGuessedLetters) => [
+    ...actualGuessedLetters,
+    normalizedLetter,
+    ])
+  } else {
+    setWrongLetters((actualWrongLetters) => [
+      ...actualWrongLetters,
+      normalizedLetter,
+    ] 
+    )
+  }
+
 }
 
 // restarts the game
@@ -76,27 +99,24 @@ const retry = () => {
   setGameStage(stages[0].name);
 }
 
-  return (
-    <div className="App">
-      <header className="App-header">
-        {gameStage === "start" && <StartScreen startGame={startGame}/>}
-        
-        {gameStage === "game" && 
-        <Game 
-        verifyLetter={verifyLetter} 
-        pickWord={pickWord}
-        pickedCategories={pickedCategories}
+return (
+  <div className="App">
+    {gameStage === "start" && <StartScreen startGame={startGame} />}
+    {gameStage === "game" && (
+      <Game
+        verifyLetter={verifyLetter}
+        pickedWord={pickedWord}
+        pickedCategory={pickedCategory}
         letters={letters}
         guessedLetters={guessedLetters}
         wrongLetters={wrongLetters}
         guesses={guesses}
-        score={score}        
-        />}
-
-        {gameStage === "end" && <GameOver retry={retry} />}
-      </header>
-    </div>
-  );
+        score={score}
+      />
+    )}
+    {gameStage === "end" && <GameOver retry={retry} score={score} />}
+  </div>
+);
 }
 
 export default App;
