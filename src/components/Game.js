@@ -1,10 +1,12 @@
 import { useState, useRef } from 'react';
+
+//style
 import './Game.css';
 
 const Game = ({
   verifyLetter,
+  pickedCategory,
   pickedWord,
-  pickedCategories,
   letters,
   guessedLetters,
   wrongLetters,
@@ -26,45 +28,42 @@ const Game = ({
   return (
     <div className='game'>
       <p className='points'>
-        <span>Pontuação: {score}</span>
+        <span>Pontuação:</span> {score}
       </p>
       <h1>Advinhe a palavra:</h1>
       <h3 className='tip'>
         Dica sobre a palavra: 
-        <span> {pickedCategories}</span>
+        <span> {pickedCategory}</span>
         <p>Você ainda tem {guesses} tentativas(s).</p>
       </h3>
+
       <div className='wordContainer'>
         {letters.map((letter, i) => 
           guessedLetters.includes(letter) ? (
-            <span className="letter" key={1}>
-              {letters}
+            <span className="letter" key={i}>
+              {letter}
               </span>
           ) : (
             <span key={i} className="blankSquare"></span>
           )
         )}
       </div>
-      <div className='letterContainer'>
-        <p>Tente advinhar um letra da palavra:</p>
+      <div className="letterContainer">
+        <p>Tente adivnhar uma letra da palavra:</p>
         <form onSubmit={handleSubmit}>
-
-          <input 
-          type="text" 
-          name="letter" 
-          maxLength="1" 
-          onChange = {(e) => 
-          setLetter(e.target.value)}
-          required
-          value={letter}
-          ref={letterInputRef}
+          <input
+            type="text"
+            name="letter"
+            maxLength="1"
+            onChange={(e) => setLetter(e.target.value)}
+            required
+            value={letter}
+            ref={letterInputRef}
           />
-
           <button>Jogar!</button>
-
         </form>
       </div>
-      <div className='wrongLettersContainer'>
+      <div className="wrongLettersContainer">
           <p>Letras já utilizadas:</p>
           {wrongLetters.map((letter, i) => (
             <span key={i}>{letter}</span>
